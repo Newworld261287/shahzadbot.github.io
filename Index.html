@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShahzadBot - QuoteX Analyzer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #101820;
+      color: #fff;
+      padding: 0;
+      margin: 0;
+    }
+    .login-box, .dashboard {
+      max-width: 500px;
+      margin: 80px auto;
+      background: #1f2b38;
+      padding: 30px;
+      border-radius: 12px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background: #00a86b;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hidden { display: none; }
+    .pair-card {
+      background: #2d3a4a;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    .signal-high { color: #00ff99; font-weight: bold; }
+    .signal-low { color: #ff4d4d; font-weight: bold; }
+    h2, h3 { text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="login-box" id="loginBox">
+  <h2>Login to ShahzadBot</h2>
+  <input type="text" id="username" placeholder="Username" />
+  <input type="password" id="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+</div>
+
+<div class="dashboard hidden" id="dashboard">
+  <h2>📊 QuoteX Smart Signal Bot</h2>
+  <h3>Confidence Level ≥ 90% → ✅ TRADE <br>Below → ❌ AVOID</h3>
+  <div id="signals">
+    <!-- Signals will be loaded here -->
+  </div>
+</div>
+
+<script>
+  const tradingPairs = [
+    { name: "EUR/USD (Futures)", confidence: 94 },
+    { name: "BTC/USD (Futures)", confidence: 89 },
+    { name: "GBP/JPY (OTC)", confidence: 92 },
+    { name: "USD/JPY (Futures)", confidence: 87 },
+    { name: "ETH/USD (OTC)", confidence: 91 },
+    { name: "AUD/CHF (Futures)", confidence: 76 }
+  ];
+
+  function login() {
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+
+    if (user === "Shahzadbot" && pass === "shahzad123") {
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      loadSignals();
+    } else {
+      alert("Invalid login!");
+    }
+  }
+
+  function loadSignals() {
+    const container = document.getElementById("signals");
+    tradingPairs.forEach(pair => {
+      const div = document.createElement("div");
+      div.classList.add("pair-card");
+      const signal = pair.confidence >= 90
+        ? `<span class="signal-high">Signal: ${pair.confidence}% ✅</span>`
+        : `<span class="signal-low">Avoid (Signal: ${pair.confidence}%) ❌</span>`;
+      div.innerHTML = `<span>${pair.name}</span> ${signal}`;
+      container.appendChild(div);
+    });
+  }
+</script>
+
+</body>
+</html>
